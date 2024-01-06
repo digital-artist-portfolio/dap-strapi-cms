@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "Name": {
+    "name": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -24,9 +24,11 @@
       },
       "type": "string",
       "required": true,
-      "unique": true
+      "unique": false,
+      "minLength": 1,
+      "maxLength": 30
     },
-    "Description": {
+    "description": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -34,7 +36,7 @@
       },
       "type": "blocks"
     },
-    "Image": {
+    "image": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -46,11 +48,11 @@
       ],
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       }
     },
-    "Alt": {
+    "alt": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -59,17 +61,10 @@
       "type": "string",
       "required": true
     },
-    "previous": {
+    "category": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::art.art",
-      "inversedBy": "next"
-    },
-    "next": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::art.art",
-      "inversedBy": "previous"
+      "target": "api::category.category"
     }
   }
 }
