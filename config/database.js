@@ -1,4 +1,7 @@
 const path = require("path");
+const fs = require("fs");
+
+console.log(__dirname, " asdasd");
 
 module.exports = ({ env }) => {
   const client = env("DATABASE_CLIENT", "sqlite");
@@ -15,7 +18,9 @@ module.exports = ({ env }) => {
         ssl: env.bool("DATABASE_SSL", false) && {
           key: env("DATABASE_SSL_KEY", undefined),
           cert: env("DATABASE_SSL_CERT", undefined),
-          ca: env("DATABASE_SSL_CA", undefined),
+          ca: fs
+            .readFileSync(`${__dirname}/ec2-strapi-key-pair.pem`)
+            .toString(),
           capath: env("DATABASE_SSL_CAPATH", undefined),
           cipher: env("DATABASE_SSL_CIPHER", undefined),
           rejectUnauthorized: env.bool(
@@ -60,9 +65,13 @@ module.exports = ({ env }) => {
         database: env("DATABASE_NAME", "strapi"),
         user: env("DATABASE_USERNAME", "strapi"),
         password: env("DATABASE_PASSWORD", "strapi"),
-        ssl: env("DATABASE_SSL", false),
+        ssl: {
+          rejectUnauthorized: env.bool(
+            "DATABASE_SSL_REJECT_UNAUTHORIZED",
+            false
+          ),
+        },
       },
-      useNullAsDefault: true,
     },
     sqlite: {
       connection: {
