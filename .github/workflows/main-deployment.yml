@@ -1,4 +1,4 @@
-name: Main Deployment
+  name: Main Deployment
 
 on:
   push:
@@ -27,6 +27,7 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main &&
+            npm install -g yarn
             yarn install --frozen-lockfile &&
             yarn build &&
             pm2 restart 0
