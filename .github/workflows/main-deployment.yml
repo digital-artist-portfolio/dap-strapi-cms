@@ -10,7 +10,7 @@ env:
   HOSTNAME: ${{secrets.HOST}}
 
 jobs:
-  deploy:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,3 +21,4 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
+          cd dap-strapi-cms
