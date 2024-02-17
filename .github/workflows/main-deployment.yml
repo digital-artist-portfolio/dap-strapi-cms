@@ -11,12 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: SSH to EC2
         env:
           PRIVATE_KEY: ${{secrets.SSH_KEY}}
           USER_NAME: "ubuntu"
           HOSTNAME: "54.221.123.24"
-
-      - name: SSH to EC2
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${USER_NAME}@${HOSTNAME}
