@@ -14,15 +14,13 @@ jobs:
   setup:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
-      - name: SSH to EC2
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
 
-      - name: Update Repository
-        working-directory: '/home/ubuntu/dap-strapi-cms'
-        run: git pull
+      - name: Install Dependencies
+        run: yarn install --fronzen-lockfile
