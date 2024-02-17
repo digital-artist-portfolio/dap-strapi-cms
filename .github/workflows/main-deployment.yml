@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: SSH to EC2
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
