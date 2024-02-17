@@ -1,0 +1,23 @@
+name: Main Deployment
+
+on:
+  push:
+    branches: [main, test]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        env:
+          PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          USER_NAME: "ubuntu"
+          HOSTNAME: "54.221.123.24"
+
+      - name: SSH to EC2
+        shell: bash
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
