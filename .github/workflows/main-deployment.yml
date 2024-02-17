@@ -22,18 +22,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: yarn install --fronzen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Rsync
-        uses: burnett01/rsync-deployments@5.1
-        with:
-          switches: -avzr --delete
-          path: ./*
-          remote_path: /home/ubuntu/dap-strapi-cms
-          remote_host: ${{secrets.HOST}}
-          remote_user: ubuntu
-          remote_key: "${{secrets.SSH_KEY}}"
+      - name: Build & Deploy
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+            cd /home/ubuntu/dap-strapi-cms &&
+            git checkout main &&
+            git fetch --all &&
+            git reset --hard origin/main &&
+            git pull origin main &&
+            sudo yarn install --frozen-lockfile &&
+            sudo yarn build &&
+            sudo pm2 restart 0
+            '
+          
