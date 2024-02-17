@@ -14,10 +14,6 @@ jobs:
   setup:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,8 +27,8 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main &&
-            sudo yarn install --frozen-lockfile &&
-            sudo yarn build &&
-            sudo pm2 restart 0
+            yarn install --frozen-lockfile &&
+            yarn build &&
+            pm2 restart 0
             '
           
