@@ -4,20 +4,36 @@ on:
   push:
     branches: [main, test]
 
+env:
+  PRIVATE_KEY: ${{secrets.SSH_KEY}}
+  USER_NAME: ${{secrets.USERNAME}}
+  HOSTNAME: ${{secrets.HOST}}
+  FOLDER: "~/dap-strapi-cms"
+
 jobs:
-  deploy:
+  setup:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-        env:
-          PRIVATE_KEY: ${{secrets.SSH_KEY}}
-          USER_NAME: "ubuntu"
-          HOSTNAME: "54.221.123.24"
+        uses: actions/checkout@v4
 
-      - name: SSH to EC2
-        shell: bash
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
+      - name: Install Dependencies
+        run: yarn install --fronzen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Rsync
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -avzr --delete
+          path: ./*
+          remote_path: /home/ubuntu/dap-strapi-cms
+          remote_host: ${{secrets.HOST}}
+          remote_user: ubuntu
+          remote_key: "${{secrets.SSH_KEY}}"
