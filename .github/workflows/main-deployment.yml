@@ -16,7 +16,7 @@ jobs:
         env:
           PRIVATE_KEY: ${{secrets.SSH_KEY}}
           USER_NAME: "ubuntu"
-          HOSTNAME: "54.221.123.24"
+          HOSTNAME: "54.221.123.240"
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
