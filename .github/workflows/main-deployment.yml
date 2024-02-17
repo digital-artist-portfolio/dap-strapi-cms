@@ -24,4 +24,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
 
       - name: Update Repository
-        run: cd /home/ubuntu/dap-strapi-cms
+        run: 'cd /home/ubuntu/dap-strapi-cms'
