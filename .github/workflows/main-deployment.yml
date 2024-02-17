@@ -6,7 +6,7 @@ on:
 
 env:
   PRIVATE_KEY: ${{secrets.SSH_KEY}}
-  USER_NAME: ${{secrests.USERNAME}}
+  USER_NAME: ${{secrets.USERNAME}}
   HOSTNAME: ${{secrets.HOST}}
 
 jobs:
